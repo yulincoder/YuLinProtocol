@@ -37,6 +37,8 @@
 	environment_launch();	
 	  
 	/* oh my god , who will able to give me some gree pot */
+    /* i am so sorrow */
+
   	for( ;; ){
 
 		print_stream(sizeof("hello,world!"),BAUD_9600,0,"hello,world!");
