@@ -38,6 +38,7 @@
 	  
 
   	for( ;; ){
+
 		print_stream(sizeof("hello,world!"),BAUD_9600,0,"hello,world!");
 		delay_for_debug();	 	
  	} 
