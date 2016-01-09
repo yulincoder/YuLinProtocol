@@ -41,6 +41,7 @@
 
   	for( ;; ){
 
+		//hao l
 	//	print_stream(sizeof("hello,world!"),BAUD_4800,0,"hello,world!");
 		delay_for_debug(); 
 		//send_queue_to_father(BAUD_4800);
