@@ -41,8 +41,10 @@
 
   	for( ;; ){
 
-		print_stream(sizeof("hello,world!"),BAUD_9600,0,"hello,world!");
-		delay_for_debug();	 	
+	//	print_stream(sizeof("hello,world!"),BAUD_4800,0,"hello,world!");
+		delay_for_debug(); 
+		//send_queue_to_father(BAUD_4800);
+		print_stream(sizeof(data_processed.cmd),BAUD_4800,FATHER_PORT,data_processed.cmd);	 	
  	} 
  }
 

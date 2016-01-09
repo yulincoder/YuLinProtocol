@@ -15,13 +15,13 @@
  /* 向父节点发送数据队列所有内容 */
  void send_queue_to_father(const uchar_8 rate)
  {
- 	  while( !queue_estimate_empty() ){
-	  	queue_read(); 		//将队列数据读到缓存区
-	  	if( data_processed.dirty == 0 ){	
+ 	//  while( !queue_estimate_empty() ){
+	 // 	queue_read(); 		//将队列数据读到缓存区
+	 // 	if( data_processed.dirty == 0 ){	
 			print_stream(sizeof(data_processed.cmd),rate,FATHER_PORT,data_processed.cmd);			 
 	  		data_processed.dirty = 1;		//缓冲区数据已脏
-		}
-	  }
+	//	}
+	//  }
  }
 
  void rcv_father_data(const uchar_8 rate)
