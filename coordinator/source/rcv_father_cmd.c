@@ -4,13 +4,12 @@
  * 这段代码是task1
  *
  */
-
+ #include <REGX52.H>
  #include "..\\include\\config.h" 
  #include "..\\include\\hardware_config.h"
  #include "..\\include\\serial.h" 
  #include "..\\include\\environment.h"
 
- #define TIMEOUT 100		//等待数据接收超时时间(ms)
 
  void send_delay(const uchar_8 delay_time )
  {
@@ -56,26 +55,28 @@
 		for( i=0;i<MESSAGE_LENGTH;i++){				
 			serial_buffer[i] = serial_read_byte(rate,FATHER_PORT);
 
-			while( (!outside_data_coming( FATHER_PORT )) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
+		//	while( (!outside_data_coming( FATHER_PORT )) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
 		  	
-			/*timeout_cnt = 0;	//	超时计数器
-			while( (timeout_cnt < TIMEOUT) && (!outside_data_coming()) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
-		 */}
+			timeout_cnt = 0;	//	超时计数器
+			while( (timeout_cnt < WAIT_DATA_TIMEOUT) && (!outside_data_coming(FATHER_PORT)) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
+		 }
 
 		 // print_stream(sizeof(serial_buffer),rate,FATHER_PORT,serial_buffer);	 
 		if( (serial_buffer[0] == hand_cmd[0]) && (serial_buffer[1] == hand_cmd[1])){
 			//握手包数据
 			print_stream(sizeof(hand_ack),rate,FATHER_PORT,hand_ack);	//返回握手确认命令
+
+			GPIO_1(4) = 0;
 		}else if( (serial_buffer[0] == data_request[0]) && (serial_buffer[1] == data_request[1])){
 			//数据请求包
 		  	send_queue_to_father(rate);	//发送队列所有数据
 		}else{
-			print_stream(sizeof("command error"),rate,FATHER_PORT,"command error");	
+			//print_stream(sizeof("command error"),rate,FATHER_PORT,"command error");	
 		}	 	  	  
    	 } 
   }
 
- 
+
  
 
 

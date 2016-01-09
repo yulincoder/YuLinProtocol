@@ -27,6 +27,9 @@
  extern uchar_8 idata hand_ack_buffer[9]; 
 
  #define BYTE_TIME_OUT 50		//接收一个byte的超时时间
+ 
+ #define WAIT_DATA_TIMEOUT 100		//等待数据接收超时时间(ms)
+
 
 
  #endif //__SERIAL_H__

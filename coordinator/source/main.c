@@ -49,14 +49,28 @@
 	print_stream(sizeof("system have be launched by 张特:\r\n"),BAUD_4800,0,"system have be launched by 张特:\r\n");
 
 	send_hand_cmd(BAUD_4800,FATHER_PORT);
+
+	GPIO_1(0) = 1;
+	GPIO_1(1) = 1;
+
+	GPIO_1(4) = 1;
+	GPIO_1(6) = 1;
+
+	/* 相互握手已经成功 */
 	for( ;; ){
 
+		//if(GPIO_1(0) == 1){
+		//	GPIO_1(5) = 0;
+		//}  
+	//	GPIO_1(0) = 1;
 		//hao hhhh
 		//print_stream(sizeof("hello,world!"),BAUD_4800,0,"hello,world!");
-		//delay_for_debug(); 
-		//rcv_father_data(BAUD_4800);
+	//	delay_for_debug(); 
+	//	rcv_father_data(BAUD_4800);
+
+		link_son(BAUD_4800,FATHER_PORT);
 		//	send_queue_to_father(BAUD_4800);
-		serach_sons(BAUD_4800);	
+	//	serach_sons(BAUD_4800);	
 	//	link_son(BAUD_4800,FATHER_PORT);			
 	//	delay_for_debug();
 	//	send_hand_cmd(BAUD_4800,FATHER_PORT);

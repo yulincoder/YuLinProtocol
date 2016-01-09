@@ -39,7 +39,7 @@
 		send_hand_cmd(rate,linked_port);	//发送握手包
 
 		timeout_cnt = 0;
-		while( timeout_cnt < 5 ){
+		while( timeout_cnt < 2 ){
 			 		
 			if( outside_data_coming( linked_port ) ){
 
@@ -49,20 +49,23 @@
 					byte_time_out_cnt = 0;
 				//	while( (!outside_data_coming(linked_port)) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
 				
-					while( (byte_time_out_cnt < 1) && (!outside_data_coming(linked_port)) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
+					while( (byte_time_out_cnt < WAIT_DATA_TIMEOUT) && (!outside_data_coming(linked_port)) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
 				}
 
 				if( (serial_buffer[0]==hand_ack[0]) && (serial_buffer[1] ==hand_ack[1]) ){
 				
+					serial_buffer[0] = 0;
+					serial_buffer[1] = 0;
 					// 调试完需要删除
-					print_stream(sizeof("握手成功"),rate,linked_port,"握手成功");
-
-					goto out;
+				//	print_stream(sizeof("握手成功"),rate,linked_port,"握手成功");
+					GPIO_0(0) = 0;
+				//	while(1);
+				//	goto out;
 				}	
 			}			
 		}
 	}  
-	out: return;	
+//	out: return;	
  }	
 
 

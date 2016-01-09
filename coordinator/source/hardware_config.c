@@ -88,7 +88,7 @@
 /* 硬件初始化 */
  void hardware_init(void)
  {
-	GPIO_1(0) = 0;
+	GPIO_1(0) = 1;
 	GPIO_1(1) = 1;
 	GPIO_1(2) = 1;
 	GPIO_1(3) = 1;
@@ -113,18 +113,15 @@
  	TH1 = 0xFC;
     TL1 = 0x66;	
 	
-
-	//完了应该改回来
-	//byte_time_out_cnt ++;
-	//timeout_cnt ++;
-
+	
+	byte_time_out_cnt ++;
+	timeout_cnt ++;
  	sys_tick ++;
 	/* 系统滴答计时1ms  */
 	if( sys_tick >= 999 ){
 		sys_tick = 0;
 
-		byte_time_out_cnt ++;
-		timeout_cnt ++;
+
 
 		debug_cnt ++;
 		aaa = ~aaa;	
