@@ -12,16 +12,38 @@
 
  #define TIMEOUT 100		//等待数据接收超时时间(ms)
 
+ void send_delay(const uchar_8 delay_time )
+ {
+ 	uchar_8 i,
+			j;
+
+	for( i=0;i<delay_time;i++ ){
+		for( j=0;j<20;j++ ){
+			;
+		}
+	}	
+ }
+
  /* 向父节点发送数据队列所有内容 */
  void send_queue_to_father(const uchar_8 rate)
  {
- 	//  while( !queue_estimate_empty() ){
-	 // 	queue_read(); 		//将队列数据读到缓存区
-	 // 	if( data_processed.dirty == 0 ){	
-			print_stream(sizeof(data_processed.cmd),rate,FATHER_PORT,data_processed.cmd);			 
-	  		data_processed.dirty = 1;		//缓冲区数据已脏
-	//	}
-	//  }
+ 	 if( !queue_estimate_empty() ){
+
+		while( !queue_estimate_empty() ){
+
+	  		queue_read(); 		//将队列数据读到缓存区
+	 		if( data_processed.dirty == 0 ){	
+				print_stream(sizeof(data_processed.cmd),rate,FATHER_PORT,data_processed.cmd);			 
+	  			data_processed.dirty = 1;		//缓冲区数据已脏
+			}
+
+			send_delay(20);
+	  }
+	 }else{
+			print_stream(sizeof("queue emptied"),rate,FATHER_PORT,"queue emptied");	
+	 }
+ 	  
+	  
  }
 
  void rcv_father_data(const uchar_8 rate)
@@ -32,42 +54,25 @@
 		
  	if( outside_data_coming() ){
 
-		for( i=0;i<9;i++){				
+		for( i=0;i<MESSAGE_LENGTH;i++){				
 			serial_buffer[i] = serial_read_byte(0,rate);
 
 			while( (!outside_data_coming()) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
 		  	/*timeout_cnt = 0;	//	超时计数器
 			while( (timeout_cnt < TIMEOUT) && (!outside_data_coming()) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
-		*/}
+		 */}
 
-		 
-		for( i=0;i<MESSAGE_LENGTH;i++ ){
-			if( serial_buffer[i] == hand_cmd[i] )
-				data_ack_cnt ++;
-		}
 
-		if( data_ack_cnt == MESSAGE_LENGTH ){
+		if( (serial_buffer[0] == hand_cmd[0]) && (serial_buffer[1] == hand_cmd[1])){
+			//握手包数据
 			print_stream(sizeof(hand_ack),rate,FATHER_PORT,hand_ack);	//返回握手确认命令
+		}else if( (serial_buffer[0] == data_request[0]) && (serial_buffer[1] == data_request[1])){
+			//数据请求包
+		  	send_queue_to_father(rate);	//发送队列所有数据
 		}else{
-			data_ack_cnt = 0;
-
-			for( i=0;i<MESSAGE_LENGTH;i++ ){
-				if( serial_buffer[i] == data_request[i] )
-					data_ack_cnt ++;
-			}
-
-			if( data_ack_cnt == MESSAGE_LENGTH ){
-				//发送队列所有数据给父节点();
-				if( !queue_estimate_empty() ){
-					send_queue_to_father(rate);
-				}else{
-					print_stream(sizeof("queue emptied"),rate,FATHER_PORT,"queue emptied");	
-				}
-			}else{
-				print_stream(sizeof("command error"),rate,FATHER_PORT,"command error");
-			} 
-		}  	  
-   	 }
+			print_stream(sizeof("command error"),rate,FATHER_PORT,"command error");	
+		}		  	  
+   	 } 
   }
 
  

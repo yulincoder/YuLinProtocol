@@ -81,7 +81,13 @@
 /* 待处理数据buffer初始化 */
  void  data_processed_init(void)
  {
+ 	uchar_8 i = 0;
+
 	data_processed.dirty = 1;
+
+	for( i=0;i<MESSAGE_LENGTH;i++ ){
+		data_processed.cmd[i] = 1;
+	}
  	return;
  }
 

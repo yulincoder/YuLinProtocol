@@ -31,22 +31,27 @@
  sbit test_led_7 = P1^7;
 
  void main(void)
- {	 	 
+ {
+ 	uchar_8 q1[9] = {"zhangte  "},
+			q2[9] = {"world   "}; 	
+			 
 	delay_for_debug();
 	hardware_launch();
-	environment_launch();	
+	environment_launch();
+	
+	queue_append(q1);
+	queue_append(q2);	
 	  
 	/* oh my god , who will able to give me some gree pot */
     /* i am so sorrow */
-
+	print_stream(sizeof("queue emptied"),BAUD_4800,FATHER_PORT,"queue emptied");
   	for( ;; ){
 
 		//hao hhhh
 	//	print_stream(sizeof("hello,world!"),BAUD_4800,0,"hello,world!");
 		delay_for_debug(); 
-		//send_queue_to_father(BAUD_4800);
-		print_stream(sizeof(data_processed.cmd),BAUD_4800,FATHER_PORT,data_processed.cmd);	 	
- 	} 
+		send_queue_to_father(BAUD_4800);
+	} 
  }
 
 
