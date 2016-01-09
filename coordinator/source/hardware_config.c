@@ -111,15 +111,20 @@
   void timer_1_IRQ(void) interrupt 3   
  {
  	TH1 = 0xFC;
-    TL1 = 0x66;
-
+    TL1 = 0x66;	
 	
-	timeout_cnt ++;
-	byte_time_out_cnt ++;
+
+	//完了应该改回来
+	//byte_time_out_cnt ++;
+	//timeout_cnt ++;
+
  	sys_tick ++;
 	/* 系统滴答计时1ms  */
 	if( sys_tick >= 999 ){
 		sys_tick = 0;
+
+		byte_time_out_cnt ++;
+		timeout_cnt ++;
 
 		debug_cnt ++;
 		aaa = ~aaa;	

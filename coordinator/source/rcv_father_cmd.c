@@ -46,23 +46,23 @@
 	  
  }
 
+/* 从父节点接收数据 */
  void rcv_father_data(const uchar_8 rate)
  {
  	uchar_8 i = 0;
-	uchar_8 data_ack_cnt = 0;
-	
-		
- 	if( outside_data_coming() ){
+			
+ 	if( outside_data_coming( FATHER_PORT ) ){
 
 		for( i=0;i<MESSAGE_LENGTH;i++){				
-			serial_buffer[i] = serial_read_byte(0,rate);
+			serial_buffer[i] = serial_read_byte(rate,FATHER_PORT);
 
-			while( (!outside_data_coming()) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
-		  	/*timeout_cnt = 0;	//	超时计数器
+			while( (!outside_data_coming( FATHER_PORT )) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
+		  	
+			/*timeout_cnt = 0;	//	超时计数器
 			while( (timeout_cnt < TIMEOUT) && (!outside_data_coming()) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
 		 */}
 
-
+		 // print_stream(sizeof(serial_buffer),rate,FATHER_PORT,serial_buffer);	 
 		if( (serial_buffer[0] == hand_cmd[0]) && (serial_buffer[1] == hand_cmd[1])){
 			//握手包数据
 			print_stream(sizeof(hand_ack),rate,FATHER_PORT,hand_ack);	//返回握手确认命令
@@ -71,12 +71,12 @@
 		  	send_queue_to_father(rate);	//发送队列所有数据
 		}else{
 			print_stream(sizeof("command error"),rate,FATHER_PORT,"command error");	
-		}		  	  
+		}	 	  	  
    	 } 
   }
 
  
-
+ 
 
 
 

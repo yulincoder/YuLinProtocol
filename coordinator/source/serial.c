@@ -16,8 +16,7 @@
 /* 产生波特率定时器使能与否操作 */
  #define BAUD_TIMER_START(enable) TR0 = ##enable
 
- #define BAUD_4800 1
- #define BAUD_9600 2
+
 
  uchar_8 idata hand_cmd_buffer[9] = {0};
  uchar_8 idata hand_ack_buffer[9] = {0};
@@ -148,7 +147,6 @@
 
 
 
-
 /* 串口发送byte数据  */
  void serial_write_byte(const uchar_8 rate,const uchar_8 serial_number,uchar_8 input)
  {
@@ -185,14 +183,7 @@
 	 * 这样可以使得电平采样发生在每一个byte的中间
 	 */
 	 /* There are some codes deleted recently ,all of which are the function of _nop_().  */ 
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-	_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
+
 
 
    	for(i=0;i<8;i++){
@@ -252,16 +243,15 @@
  /*
   * doc:
   *	"serial_number" is the number of serial,and "input" is the
-  * will be sent date ,only byte, accross serial。
+  * will be sent date ,only byte, accross serial.
   */
-
   switch( serial_number ){
-  	case 0:	 return serial_0_read_byte(rate);	   //串口0接收
-	case 1:	 return serial_1_read_byte(rate);	   //串口1接收
 
-	default: return 0;
+  	case FATHER_PORT:	 return serial_0_read_byte(rate);  //串口0接收
+	case SON_PORT(1):	 return serial_1_read_byte(rate); //串口1接收
+
+	default: return '0';	
   }
-	 
  }
 
 
@@ -289,7 +279,12 @@
 
 
  /* 外部数据流到来 */
- uchar_8 outside_data_coming(void)
+ uchar_8 outside_data_coming(const uchar_8 port)
  {
- 	return (RXD_0 == 0);
+ 	switch(port){
+ 		case PORT(0):	return (RXD_0 == 0);
+		case PORT(1):	return (RXD_1 == 0);
+		case PORT(2):	return (RXD_2 == 0);
+		default :	return 0;
+	}
  }  

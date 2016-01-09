@@ -15,7 +15,7 @@
  uint_16 timeout_cnt = 0;	 		//连接超时计数器 
 
  uchar_8 //hand_cmd[9] 		= {"hq000xxxx"},
- 		 hand_cmd[9] 		= {"hhhhhhhhh"},
+ 		 hand_cmd[9] 		= {"hqhhhhhhh"},
  		 hand_ack[9] 		= {"ha000001x"},
 		 //data_request[9] 	= {"dq000222x"},
 		 data_request[9] 	= {"ddddddddd"},

@@ -15,7 +15,7 @@
  extern uchar_8 serial_0_read_byte(const uchar_8 rate);
  
 /* 外部数据流到来 */
- extern uchar_8 outside_data_coming(void); 
+ extern  uchar_8 outside_data_coming(const uchar_8 port); 
 
 /* 输出字符流 */ 
  extern void print_stream(const uchar_8 data_size,const uchar_8 rate,const uchar_8 serial_number, uchar_8 * pstream);  
@@ -28,7 +28,5 @@
 
  #define BYTE_TIME_OUT 50		//接收一个byte的超时时间
 
- #define BAUD_4800 1			//波特率4800参数
- #define BAUD_9600 2			//波特率9600参数
 
  #endif //__SERIAL_H__
