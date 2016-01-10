@@ -34,18 +34,22 @@
  
 
  
- typedef struct sons_struct{
+  typedef struct sons_struct{
  	/*
 	 *  router连接状态
 	 */
+	uchar_8 linked_father : 1;
  	uchar_8 linked_1 : 1;
 	uchar_8 linked_2 : 1;
 	uchar_8 linked_3 : 1;	
 	uchar_8 : 0;
+	
+	uchar_8 linked_amount;	//已连接子节点数量
  }sons_status_type;
  extern sons_status_type idata sons_status;
 
 
+ extern uchar_8 host_id[3];
 
 
  extern uchar_8 hand_cmd[9] ,
@@ -68,11 +72,22 @@
 /* 判断队是否为空 */
  extern bit queue_estimate_empty(void);
 
+ extern void clean_serial_buffer(void);
+
 /* 判断队是否为满 */
  extern bit queue_estimate_full(void);
 
 /* 软件环境启动 */
  extern void environment_launch(void);
+
+/* 根据收到的父节点握手命令提取出本机id */
+ extern void rcv_father_hand_creat_host_id(uchar_8 * cmd);
+
+/* 根据本机id生成本机命令 */
+ extern void id_insert_data(void);
+
+ /* 检查节点连接显示 */
+ extern void chaeck_linked_worked(void);
 
 /* 串口接收数据缓冲区 */
  extern uchar_8 idata serial_buffer[MESSAGE_LENGTH];

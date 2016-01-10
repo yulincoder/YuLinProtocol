@@ -4,7 +4,7 @@
 //查找子节点
  extern  void serach_sons( const uchar_8 rate );
 
- extern  void link_son(const uchar_8 rate,const uchar_8 linked_port);
+ extern  bit link_son(const uchar_8 rate,const uchar_8 linked_port);
 
 /* 发送握手包 */
  extern  void send_hand_cmd(const uchar_8 rate, const uchar_8 linked_port );

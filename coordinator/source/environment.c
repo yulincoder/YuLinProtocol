@@ -15,12 +15,13 @@
  uint_16 timeout_cnt = 0;	 		//连接超时计数器 
 
  uchar_8 //hand_cmd[9] 		= {"hq000xxxx"},
- 		 hand_cmd[9] 		= {"hqhhhhhhh"},
- 		 hand_ack[9] 		= {"ha000001x"},
+ 		 hand_cmd[9] 		= {"hq0012540"},
+ 		 hand_ack[9] 		= {"ha000zht0"},
 		 //data_request[9] 	= {"dq000222x"},
-		 data_request[9] 	= {"ddddddddd"},
-		 data_respond[9] 	= {"da000254x"}; 
+		 data_request[9] 	= {"dq0002300"},
+		 data_respond[9] 	= {"da0002540"}; 
 
+ uchar_8 host_id[3] = {0}; //本机id
 /* 串口接收数据缓冲区 */
  uchar_8 idata serial_buffer[MESSAGE_LENGTH] = {0};
  
@@ -54,16 +55,17 @@
 
  
 
- typedef struct sons_struct{
+typedef struct sons_struct{
  	/*
 	 *  router连接状态
 	 */
+	uchar_8 linked_father : 1;
  	uchar_8 linked_1 : 1;
 	uchar_8 linked_2 : 1;
 	uchar_8 linked_3 : 1;	
 	uchar_8 : 0;
 
-	uchar_8 amount;	//允许节点最大数量
+	uchar_8 linked_amount;	//已连接子节点数量
  }sons_status_type;
 
  sons_status_type idata sons_status;
@@ -72,11 +74,99 @@
 
  void sons_status_init(void)
  {
- 	sons_status.linked_1 = SON_DISCONNECTED;
+  	sons_status.linked_father = SON_DISCONNECTED;
+	sons_status.linked_1 = SON_DISCONNECTED;
 	sons_status.linked_2 = SON_DISCONNECTED;
 	sons_status.linked_3 = SON_DISCONNECTED;
-	sons_status.amount = SONS_AMOUNT;	
+	sons_status.linked_amount = 0;		
  }
+
+/* 清空接收缓冲区 */
+ void clean_serial_buffer(void)
+ {
+ 	uchar_8 i = 0;
+	for( i=0;i<MESSAGE_LENGTH;i++ ){
+		serial_buffer[i] = 0;	
+	}
+ }
+
+/* 根据收到的父节点握手命令提取出本机id */
+ void rcv_father_hand_creat_host_id(uchar_8 * cmd)
+ {
+ 	uchar_8 i = 0;
+//	cmd ++;
+ 	host_id[0] = cmd[2];
+	host_id[1] = cmd[3];
+	host_id[2] = cmd[4];
+	
+    for( i=0;i<3;i++ ){
+		if( host_id[0] == '1' ){
+			goto out;
+		}else if(host_id[2] == '0'){
+
+			host_id[2] = '1';	
+		} else if( host_id[i] == '1' ){
+		  		host_id[i-1] = '1';
+				goto out;
+			}	
+	}  
+
+out: return;
+	
+ }
+
+/* 根据本机id生成本机命令 */
+ void id_insert_data(void)
+ {
+ 	uchar_8 i = 0;
+
+	for( i=0;i<3;i++ ){
+		hand_cmd[i+2] = host_id[i];
+		hand_ack[i+2] = host_id[i];
+		data_request[i+2] = host_id[i];
+		data_respond[i+2] = host_id[i];			
+	}
+ }
+
+ /* 检查节点连接显示 */
+ void chaeck_linked_worked(void)
+ {
+ 	sons_status.linked_amount = 0;
+	
+	if( sons_status.linked_father == FATHER_CONNECTED ){
+
+ 		GPIO_1(4) = 0;
+	}else{
+		GPIO_1(4) = 1;
+	}
+		
+ 	if( sons_status.linked_1 == SON_CONNECTED ){
+
+ 		GPIO_0(5) = 0;
+		sons_status.linked_amount ++;
+	}else{
+		GPIO_0(5) = 1;
+	}
+	
+	if( sons_status.linked_2 == SON_CONNECTED ){
+
+ 		GPIO_0(6) = 0;
+		sons_status.linked_amount ++;
+	}else{
+		GPIO_0(6) = 1;
+	}
+	
+	if( sons_status.linked_3 == SON_CONNECTED ){
+
+ 		GPIO_0(7) = 0;
+		sons_status.linked_amount ++;
+	}else{
+		GPIO_0(7) = 1;
+	}
+		
+ }
+
+
 
 /* 待处理数据buffer初始化 */
  void  data_processed_init(void)

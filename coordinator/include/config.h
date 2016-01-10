@@ -54,6 +54,8 @@
 
   	#define SON_CONNECTED 1		//子节点连接状态
   	#define SON_DISCONNECTED 0	//子节点断开状态
+	#define FATHER_CONNECTED 1	//子节点断开状态
+	#define FATHER_DISCONNECTED 0	//子节点断开状态
 
 	#define SONS_AMOUNT   2		//允许连接子节点最大数量
 

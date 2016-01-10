@@ -32,7 +32,7 @@
 
  void main(void)
  {
- 	uchar_8 q1[9] = {"zhangte  "},
+ 	uchar_8 q1[9] = {"ha001003x"},
 			q2[9] = {"world   "}; 
 	
 	uchar_8 a = 0;	
@@ -46,15 +46,8 @@
 	  
 	/* oh my god , who will able to give me some lovely gree pot in github??  */
     /* i am so sorrow */
-	print_stream(sizeof("system have be launched by 张特:\r\n"),BAUD_4800,0,"system have be launched by 张特:\r\n");
+//	print_stream(sizeof("system have be launched by 张特:\r\n"),BAUD_4800,0,"system have be launched by 张特:\r\n");
 
-	send_hand_cmd(BAUD_4800,FATHER_PORT);
-
-	GPIO_1(0) = 1;
-	GPIO_1(1) = 1;
-
-	GPIO_1(4) = 1;
-	GPIO_1(6) = 1;
 
 	/* 
 	 * 相互握手已经成功 
@@ -63,28 +56,40 @@
 	 *				 完成数据传输任务，并封装API
 	 */
 	for( ;; ){
+		chaeck_linked_worked();
 
-		//if(GPIO_1(0) == 1){
-		//	GPIO_1(5) = 0;
-		//}  
-	//	GPIO_1(0) = 1;
-		//hao hhhh
-		//print_stream(sizeof("hello,world!"),BAUD_4800,0,"hello,world!");
-	//	delay_for_debug(); 
-	//	rcv_father_data(BAUD_4800);
 
-	//	link_son(BAUD_4800,FATHER_PORT);
-		//	send_queue_to_father(BAUD_4800);
-		serach_sons(BAUD_4800);	
-	//	link_son(BAUD_4800,FATHER_PORT);			
-	//	delay_for_debug();
-	//	send_hand_cmd(BAUD_4800,FATHER_PORT);
-	//	serial_write_byte( BAUD_4800,FATHER_PORT,' ' );
-		/*if( outside_data_coming() ){
-		//	a = serial_0_read_byte(BAUD_4800);
- 			a = serial_read_byte(BAUD_4800,FATHER_PORT);
-			serial_write_byte( BAUD_4800,FATHER_PORT,a );
- 		}  */
+
+/* 父节点 */
+		if( sons_status.linked_1 == SON_DISCONNECTED ){
+
+ 			serach_sons(BAUD_4800);		
+		}  
+		temporary_rcv_sons(BAUD_4800);
+	
+		if( byte_time_out_cnt > 1000 ){
+			byte_time_out_cnt = 0;
+			print_stream(sizeof(hand_cmd),BAUD_9600,FATHER_PORT,hand_cmd);
+		
+		}   
+	  	 
+   
+
+
+
+
+/* 子节点 */   
+
+/*	 	if( sons_status.linked_father == SON_DISCONNECTED){ 
+			rcv_father_data(BAUD_4800);
+	 	} else{
+			if( byte_time_out_cnt > 900 ){
+			 byte_time_out_cnt = 0;	  
+			 temporary_send_data(BAUD_4800,FATHER_PORT,data_request);
+			}
+		}  
+		 */		
+		
 	} 
  }
 
@@ -99,7 +104,7 @@
 					j;
 
 	for( i=0; i<250; i++ )
-		for( j=0; j<120; j++ )
+		for( j=0; j<20; j++ )
 		;
  }
 

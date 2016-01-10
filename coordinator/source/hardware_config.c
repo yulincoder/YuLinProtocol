@@ -96,6 +96,15 @@
 	GPIO_1(5) = 1;
 	GPIO_1(6) = 1;
 	GPIO_1(7) = 1;
+
+	GPIO_0(0) = 1;
+	GPIO_0(1) = 1;
+	GPIO_0(2) = 1;
+	GPIO_0(3) = 1;
+	GPIO_0(4) = 1;
+	GPIO_0(5) = 1;
+	GPIO_0(6) = 1;
+	GPIO_0(7) = 1;
 	/* ∂® ±∆˜≈‰÷√ */
 	timer_config();
 
@@ -107,7 +116,7 @@
  	return;	
  }
 
- bit aaa = 0;
+ bit system_worked = 0;
   void timer_1_IRQ(void) interrupt 3   
  {
  	TH1 = 0xFC;
@@ -124,8 +133,8 @@
 
 
 		debug_cnt ++;
-		aaa = ~aaa;	
- 		GPIO_0(1) = aaa; 
+ 		system_worked = ~system_worked;	
+ 		GPIO_0(0) = system_worked; 	 
 	}		   
 	return;	
  } 
