@@ -56,7 +56,12 @@
 	GPIO_1(4) = 1;
 	GPIO_1(6) = 1;
 
-	/* 相互握手已经成功 */
+	/* 
+	 * 相互握手已经成功 
+	 * 目前技术债务: 需要确定初始化各个引脚，将其它函数内debug用的led全部清除，但是保留系统启动指示灯
+	 * 				 然后继续调试
+	 *				 完成数据传输任务，并封装API
+	 */
 	for( ;; ){
 
 		//if(GPIO_1(0) == 1){
@@ -68,9 +73,9 @@
 	//	delay_for_debug(); 
 	//	rcv_father_data(BAUD_4800);
 
-		link_son(BAUD_4800,FATHER_PORT);
+	//	link_son(BAUD_4800,FATHER_PORT);
 		//	send_queue_to_father(BAUD_4800);
-	//	serach_sons(BAUD_4800);	
+		serach_sons(BAUD_4800);	
 	//	link_son(BAUD_4800,FATHER_PORT);			
 	//	delay_for_debug();
 	//	send_hand_cmd(BAUD_4800,FATHER_PORT);

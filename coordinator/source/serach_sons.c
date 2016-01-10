@@ -47,8 +47,13 @@
 					serial_buffer[i] = serial_read_byte(rate,linked_port);
 
 					byte_time_out_cnt = 0;
+
+				 				
+				/* 
+				 * 具体超时时间需要以后慢慢确定，以下第一行是串口调试助手调试使用，无需设置超时
+				 * 第二个是板子互相通信等待，需要设置超时	
+				 */
 				//	while( (!outside_data_coming(linked_port)) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
-				
 					while( (byte_time_out_cnt < WAIT_DATA_TIMEOUT) && (!outside_data_coming(linked_port)) && (i < MESSAGE_LENGTH - 1) );  //等待下一byte数据
 				}
 
@@ -56,16 +61,21 @@
 				
 					serial_buffer[0] = 0;
 					serial_buffer[1] = 0;
-					// 调试完需要删除
+
+				/* 
+				 * 以下第一行代码为	调试使用，release版应该删除
+				 * 第二行不应该删除，作为连接成功的指示灯
+				 */
 				//	print_stream(sizeof("握手成功"),rate,linked_port,"握手成功");
 					GPIO_0(0) = 0;
-				//	while(1);
-				//	goto out;
+				
+				/* goto在板子之间通信需呀保留，握手成功跳出条件循环 */
+					goto out;
 				}	
 			}			
 		}
 	}  
-//	out: return;	
+	out: return;	
  }	
 
 
@@ -74,15 +84,18 @@
  	uchar_8 number_port = 0;
 
 	// 调试完number_port需要从1开始
- 	for( number_port=0;number_port<SONS_AMOUNT;number_port++){
+ 	for( number_port=0;number_port<SONS_AMOUNT;number_port++ ){
 
 		switch(number_port){
+			case PORT(0):	link_son(rate,number_port); break; 
+			case PORT(1):	link_son(rate,number_port); break; 
+		  	case PORT(2):   link_son(rate,number_port); break;
 
 			//port 0为与父节点的链路
-			case 0:	print_stream(sizeof("暂时查找父亲:"),rate,0,"暂时查找父亲:");link_son(rate,number_port); break; 
+		/*	case 0:	print_stream(sizeof("暂时查找父亲:"),rate,0,"暂时查找父亲:");link_son(rate,number_port); break; 
 			case 1:	print_stream(sizeof("查找儿子1:"),rate,0,"查找儿子1:");link_son(rate,number_port); break; 
 		  	case 2: print_stream(sizeof("查找儿子2:"),rate,0,"查找儿子2:");link_son(rate,number_port); break;
-			case 3: break;
+			case 3: break;	*/
 			default : break;
 		}
 		//调试时加这个函数，显示不会乱码
