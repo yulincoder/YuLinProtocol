@@ -21,6 +21,8 @@
 		 data_request[9] 	= {"dq0002300"},
 		 data_respond[9] 	= {"da0002540"}; 
 
+
+ /**/
  uchar_8 host_id[3] = {0}; //本机id
 /* 串口接收数据缓冲区 */
  uchar_8 idata serial_buffer[MESSAGE_LENGTH] = {0};
