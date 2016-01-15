@@ -59,6 +59,7 @@
 		chaeck_linked_worked();
 
 		/* so trouble */
+		/**/
 
 /* ¸¸½Úµã */
 		if( sons_status.linked_1 == SON_DISCONNECTED ){
