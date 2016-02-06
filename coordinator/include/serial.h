@@ -31,5 +31,4 @@
  #define WAIT_DATA_TIMEOUT 100		//等待数据接收超时时间(ms)
 
 
-
  #endif //__SERIAL_H__
