@@ -1,13 +1,3 @@
-/*---------------------------------------------------------------------------------
-  --
-  ---------------------------------------------------------------------------------
-  --                                        
-  --
-  --
-  --
-  ---------------------------------------------------------------------------------
- */
-
 /*************************************************************************************************************
  * 
  * YuLinProtocol,simulate Zigebee Protocol,
@@ -44,9 +34,8 @@
 	queue_append(q1);
 	queue_append(q2);	
 	  
-	/* oh my god , who will able to give me some lovely gree pot in github??  */
-    /* i am so sorrow */
-//	print_stream(sizeof("system have be launched by 张特:\r\n"),BAUD_4800,0,"system have be launched by 张特:\r\n");
+
+  //	print_stream(sizeof("system have be launched by 张特:\r\n"),BAUD_4800,0,"system have be launched by 张特:\r\n");
 
 
 	/* 
@@ -61,7 +50,7 @@
 		/* so trouble */
 		/**/
 
-/* 父节点 */
+    /* 父节点 */
 		if( sons_status.linked_1 == SON_DISCONNECTED ){
 
  			serach_sons(BAUD_4800);		
