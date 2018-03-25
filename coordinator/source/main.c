@@ -13,8 +13,7 @@
  #include "..\\include\\req_son_data.h" 
  #include "..\\include\\rcv_father_cmd.h" 
  #include "..\\include\\serach_sons.h"
- #include "..\\application\\ds18b20.h"  	 
-
+ #include "..\\application\\ds18b20.h"  	
 
  void delay_for_debug(void);
 	
@@ -35,42 +34,37 @@
 	queue_append(q2);	
 	  
 
-  //	print_stream(sizeof("system have be launched by ÕÅÌØ:\r\n"),BAUD_4800,0,"system have be launched by ÕÅÌØ:\r\n");
+  //	print_stream(sizeof("system have be launched by å¼ ç‰¹:\r\n"),BAUD_4800,0,"system have be launched by å¼ ç‰¹:\r\n");
 
 
 	/* 
-	 * Ïà»¥ÎÕÊÖÒÑ¾­³É¹¦ 
-	 * Ä¿Ç°¼¼ÊõÕ®Îñ: ÐèÒªÈ·¶¨³õÊ¼»¯¸÷¸öÒý½Å£¬½«ÆäËüº¯ÊýÄÚdebugÓÃµÄledÈ«²¿Çå³ý£¬µ«ÊÇ±£ÁôÏµÍ³Æô¶¯Ö¸Ê¾µÆ
-	 * 				 È»ºó¼ÌÐøµ÷ÊÔ
-	 *				 Íê³ÉÊý¾Ý´«ÊäÈÎÎñ£¬²¢·â×°API
+	 * ç›¸äº’æ¡æ‰‹å·²ç»æˆåŠŸ 
+	 * ç›®å‰æŠ€æœ¯å€ºåŠ¡: éœ€è¦ç¡®å®šåˆå§‹åŒ–å„ä¸ªå¼•è„šï¼Œå°†å…¶å®ƒå‡½æ•°å†…debugç”¨çš„ledå…¨éƒ¨æ¸…é™¤ï¼Œä½†æ˜¯ä¿ç•™ç³»ç»Ÿå¯åŠ¨æŒ‡ç¤ºç¯
+	 * 				 ç„¶åŽç»§ç»­è°ƒè¯•
+	 *				 å®Œæˆæ•°æ®ä¼ è¾“ä»»åŠ¡ï¼Œå¹¶å°è£…API
 	 */
 	for( ;; ){
+		
 		chaeck_linked_worked();
 
 		/* so trouble */
 		/**/
 
-    /* ¸¸½Úµã */
+		/* çˆ¶èŠ‚ç‚¹ */
 		if( sons_status.linked_1 == SON_DISCONNECTED ){
-
- 			serach_sons(BAUD_4800);		
+			serach_sons(BAUD_4800);		
 		}  
 		temporary_rcv_sons(BAUD_4800);
-	
+
 		if( byte_time_out_cnt > 1000 ){
 			byte_time_out_cnt = 0;
 			print_stream(sizeof(hand_cmd),BAUD_9600,FATHER_PORT,hand_cmd);
-		
+
 		}   
 	  	 
-   
-
-
-
-
-/* ×Ó½Úµã */   
-
-/*	 	if( sons_status.linked_father == SON_DISCONNECTED){ 
+		/* å­èŠ‚ç‚¹ */   
+		/*	 	
+		if( sons_status.linked_father == SON_DISCONNECTED){ 
 			rcv_father_data(BAUD_4800);
 	 	} else{
 			if( byte_time_out_cnt > 900 ){
@@ -86,12 +80,12 @@
 
 
 /********************
- * µ÷ÊÔÓÃÑÓÊ±º¯Êý
+ * è°ƒè¯•ç”¨å»¶æ—¶å‡½æ•°
  */
  void delay_for_debug(void)
  {
 	unsigned char 	i,
-					j;
+			j;
 
 	for( i=0; i<250; i++ )
 		for( j=0; j<20; j++ )
